@@ -1,0 +1,38 @@
+name: Send Signal to Paper Server
+on: [push, workflow_dispatch]
+
+jobs:
+  run-server-signal:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Java Environment
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '8' # Paper 1.12.2 runs optimally on Java 8
+
+      - name: Download Paper JAR
+        run: |
+          wget https://githubusercontent.com
+          echo "eula=true" > eula.txt
+
+      - name: Copy Pre-Configured server.properties
+        run: |
+          echo "enable-rcon=true" >> server.properties
+          echo "rcon.password=YourSecurePassword123" >> server.properties
+          echo "rcon.port=25575" >> server.properties
+
+      - name: Start Paper Server in Background
+        run: java -Xmx1G -jar paper-1.12.2.jar nogui &
+        # The '&' runs it as a background process so the action script can continue
+
+      - name: Wait for Boot
+        run: sleep 30 # Gives the server time to start up and listen on port 25575
+
+      - name: Compile and Run Java Signal Sender
+        run: |
+          javac PaperSignalSender.java
+          java PaperSignalSender
