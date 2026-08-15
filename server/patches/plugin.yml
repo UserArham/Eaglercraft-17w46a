@@ -1,0 +1,6 @@
+name: UserArham
+version: 1.0.1
+main: ch.cclerc.userarham.Main
+api-version: 1.12, 1.13
+author: UserArham
+description: no AreaEffectCloud on eaglercraft 1.13 and server fixes
